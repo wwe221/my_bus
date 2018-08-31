@@ -23,8 +23,6 @@ import java.net.URL;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-
-
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -32,16 +30,9 @@ public class Tab1Fragment extends Fragment {
     Document Doc;
     ListView listview ;
     ListViewAdapter adapter;
-    String s = "";
-    String bus;
-    String a = "7016";
-    String b= "7018";
-    String c= "1711";
-    String d= "1020";
-    String f ="7212";
-    String A[] = {a,b,c,d,f};
     String Bus[] ={"1","2","3","4","5"};
     String texts[] = new String[5];
+    URL url;
     public Tab1Fragment() {
         // Required empty public constructor
     }
@@ -49,7 +40,8 @@ public class Tab1Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-
+        getBus myb = new getBus();
+        myb.execute("100000023");
         View view = inflater.inflate(R.layout.fragment_tab1, container, false);
         listview = (ListView) view.findViewById(R.id.listview1);
         adapter = (ListViewAdapter)new ListViewAdapter() ;
@@ -64,79 +56,23 @@ public class Tab1Fragment extends Fragment {
                 // TODO : use item data.
             }
         }) ;
-        new GetXMLTask().execute();
+        //new GetXMLTask().execute("100000180");
         try{
-            Thread.sleep(1000);
+            Thread.sleep(800);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+        myb.cancel(false);
+        Bus=myb.getB();
+        texts=myb.getS();
+        print();
         return view;
     }
-    private class GetXMLTask extends AsyncTask<String, Void, Document> {
-        @Override
-        protected Document doInBackground(String... urls) {
-            URL url;
-            try{
-                Log.i("@@@@","로그인");
-                String q="100000180";
-                // 100000180 상명대 정문
-                // 100000040 상명대 입구 7018
-                // 100000189 상명대 입구
-                // 100000021 경복궁역
-                url = new URL("http://ws.bus.go.kr/api/rest/arrive/getLowArrInfoByStId?ServiceKey=ZUpYRcYG5aEM7ugMSQoNmjtAc0leLgZoJJqH2Z5feXJGJkYa1EGV3Ag6evY6QU%2FKczL6URU8QkG7lO%2FO%2FAkZCA%3D%3D&stId=100000023");
-                DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
-                DocumentBuilder db = dbf.newDocumentBuilder();
-                Doc = db.parse(new InputSource(url.openStream()));
-                Doc.getDocumentElement().normalize();
-            } catch (Exception e) {
-                Log.i("try","wrong");
-            }
-            return Doc;
-        }
-        @Override
-        protected void onPostExecute(Document doc) {
-            Log.i("Root element :",doc.getDocumentElement().getNodeName());// root tag
-            NodeList nodeList = doc.getElementsByTagName("itemList");
-            Log.i("파싱할 리스트 수 : ",nodeList.getLength()+"개");
-            for(int i = 0; i< nodeList.getLength(); i++){
-                Node node = nodeList.item(i);
-                Element eElement = (Element) node;
-                if (node.getNodeType() == Node.ELEMENT_NODE) {
-                    bus=getTagValue("rtNm", eElement);
-                    for(int ii=0;ii<5;ii++) {
-                        if (bus.equals(A[ii])) {
-                            s = "이번: " + getTagValue("arrmsg1", eElement) + "     ";
-                            s += "탑승: " + getTagValue("reride_Num1", eElement) + "명" + "\n";
-                            s += "다음: " + getTagValue("arrmsg2", eElement) + "     ";
-                            s += "탑승: " + getTagValue("reride_Num2", eElement) + "명" + "\n";
-                            Bus[ii] = bus;
-                            texts[ii] = s;
-                            Log.i("@@@",bus);
-                            //adapter.addItem(bus,s);
-                        }
-                    }
-
-                }
-            }
-            print();
-            super.onPostExecute(doc);
-
-        }
-
-    }
-    public void print(){
-        for(int i=0;i<5;i++){
-            adapter.addItem(Bus[i],texts[i]);
-
+    public void print() {
+        for (int i = 0; i < 5; i++) {
+            adapter.addItem(Bus[i], texts[i]);
         }
         adapter.notifyDataSetChanged();
-    }
-    private static String getTagValue(String tag, Element eElement) {
-        NodeList nlList = eElement.getElementsByTagName(tag).item(0).getChildNodes();
-        Node nValue = (Node) nlList.item(0);
-        if (nValue == null)
-            return null;
-        return nValue.getNodeValue();
     }
 }

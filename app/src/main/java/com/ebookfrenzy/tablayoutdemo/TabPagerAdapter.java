@@ -3,6 +3,7 @@ package com.ebookfrenzy.tablayoutdemo;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.widget.TextView;
 
 public class TabPagerAdapter extends FragmentPagerAdapter {
 
@@ -15,6 +16,7 @@ public class TabPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+
         switch (position) {
             case 0:
                 Tab1Fragment tab1 = new Tab1Fragment();

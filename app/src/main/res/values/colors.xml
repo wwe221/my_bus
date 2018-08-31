@@ -3,4 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="noritercolor2">#ff8a65</color>
+    <color name="busColor">#2ECC71</color>
+    <color name="busColor2">#1ABC9C</color>
 </resources>

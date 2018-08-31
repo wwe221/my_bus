@@ -11,6 +11,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class TabLayoutDemoActivity extends AppCompatActivity {
 
@@ -20,10 +21,8 @@ public class TabLayoutDemoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tab_layout_demo);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         TabLayout tabLayout =
                 (TabLayout) findViewById(R.id.tab_layout);
-
         tabLayout.addTab(tabLayout.newTab().setIcon(
                 android.R.drawable.presence_online));
         tabLayout.addTab(tabLayout.newTab().setIcon(
@@ -31,7 +30,7 @@ public class TabLayoutDemoActivity extends AppCompatActivity {
         tabLayout.addTab(tabLayout.newTab().setIcon(
                 android.R.drawable.ic_dialog_map));
         tabLayout.addTab(tabLayout.newTab().setIcon(
-                android.R.drawable.ic_dialog_info));
+                android.R.drawable.ic_menu_compass));
 
         final ViewPager viewPager =
                 (ViewPager) findViewById(R.id.pager);
@@ -61,7 +60,7 @@ public class TabLayoutDemoActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show();
+                Snackbar.make(view, "광화문,정문,7018입구,입구", Snackbar.LENGTH_LONG).setAction("Action", null).show();
 
             }
         });
@@ -80,9 +79,9 @@ public class TabLayoutDemoActivity extends AppCompatActivity {
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
+            Toast.makeText(this,"광화문,정문,7018입구,입구",Toast.LENGTH_SHORT).show();
             return true;
         }
 
